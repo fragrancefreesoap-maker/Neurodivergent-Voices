@@ -1,1 +1,1640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Neurodivergent Voices | Different Minds. Real Voices.</title>
+
+  <meta
+    name="description"
+    content="Neurodivergent Voices — trusted resources, wellness tools, advocacy information, and community for neurodivergent individuals and their supporters."
+  />
+
+  <style>
+    :root {
+      --red: #c62828;
+      --red-dark: #941d1d;
+      --red-light: #fff1f1;
+      --cream: #faf5f0;
+      --white: #ffffff;
+      --black: #171717;
+      --text: #252525;
+      --muted: #666;
+      --border: #e5ded8;
+      --blue-focus: #1259c3;
+
+      --radius: 22px;
+      --shadow: 0 12px 35px rgba(0,0,0,.08);
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.65;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:focus,
+    button:focus,
+    input:focus {
+      outline: 3px solid var(--blue-focus);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(var(--max-width), calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 25px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 14px;
+      background: var(--red);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 15px;
+    }
+
+    .brand-name {
+      font-weight: 900;
+      font-size: 17px;
+      line-height: 1.1;
+    }
+
+    .brand-tagline {
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    nav a {
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    nav a:hover {
+      color: var(--red);
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 0;
+      background: var(--black);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       BUTTONS
+    ========================== */
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 2px solid var(--red);
+      transition: .2s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(198,40,40,.18);
+    }
+
+    .btn-primary {
+      background: var(--red);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--red);
+    }
+
+    .btn-dark {
+      background: var(--black);
+      color: white;
+      border-color: var(--black);
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      background:
+        linear-gradient(
+          135deg,
+          #fff8f4 0%,
+          #ffffff 55%,
+          #fff0f0 100%
+        );
+      padding: 90px 0 75px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--red-dark);
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    h1 {
+      font-size: clamp(44px, 6vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+      margin-bottom: 22px;
+    }
+
+    .hero-text {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .hero-card {
+      background: white;
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card h2 {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .hero-list {
+      list-style: none;
+      display: grid;
+      gap: 14px;
+    }
+
+    .hero-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .check {
+      width: 25px;
+      height: 25px;
+      flex: 0 0 25px;
+      background: var(--red-light);
+      color: var(--red);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    /* =========================
+       SECTIONS
+    ========================== */
+
+    section {
+      padding: 80px 0;
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 35px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(32px, 4vw, 46px);
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      margin-bottom: 12px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    /* =========================
+       RESOURCE CARDS
+    ========================== */
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .resource-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: .2s ease;
+    }
+
+    .resource-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .resource-icon {
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+
+    .resource-card h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .resource-card p {
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .resource-link {
+      color: var(--red-dark);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    /* =========================
+       FEATURED RESOURCES
+    ========================== */
+
+    .cream {
+      background: var(--cream);
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+
+    .featured-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 27px;
+      padding: 32px;
+      box-shadow: 0 8px 25px rgba(0,0,0,.05);
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--red-light);
+      color: var(--red-dark);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .featured-card h3 {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    .featured-card p {
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    /* =========================
+       WELLNESS TOOL
+    ========================== */
+
+    .wellness-box {
+      background: var(--black);
+      color: white;
+      border-radius: 30px;
+      padding: 42px;
+    }
+
+    .wellness-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .wellness-box h2 {
+      font-size: 40px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .wellness-box p {
+      color: #ddd;
+      margin-bottom: 22px;
+    }
+
+    .wellness-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      list-style: none;
+    }
+
+    .wellness-list li {
+      background: #292929;
+      border-radius: 12px;
+      padding: 11px 13px;
+    }
+
+    /* =========================
+       VOICES
+    ========================== */
+
+    .voices-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+
+    .voice-card {
+      background: white;
+      border-left: 5px solid var(--red);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,.06);
+    }
+
+    .voice-card blockquote {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .voice-card span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       SHOP
+    ========================== */
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .shop-highlight {
+      background: var(--red-light);
+      border-radius: 28px;
+      padding: 35px;
+    }
+
+    .shop-highlight h3 {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+
+    /* =========================
+       ABOUT
+    ========================== */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 45px;
+      align-items: center;
+    }
+
+    .about-box {
+      background: var(--red-light);
+      border-radius: 25px;
+      padding: 30px;
+    }
+
+    .about-box h3 {
+      font-size: 23px;
+      margin-bottom: 10px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    /* =========================
+       NEWSLETTER
+    ========================== */
+
+    .newsletter {
+      background: var(--red);
+      color: white;
+      padding: 45px;
+      border-radius: 30px;
+    }
+
+    .newsletter h2 {
+      font-size: 40px;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .newsletter p {
+      margin-bottom: 22px;
+    }
+
+    .newsletter form {
+      display: flex;
+      max-width: 680px;
+      gap: 10px;
+    }
+
+    .newsletter input {
+      flex: 1;
+      border: 0;
+      border-radius: 999px;
+      padding: 15px 18px;
+      font-size: 16px;
+    }
+
+    .newsletter button {
+      border: 0;
+      background: var(--black);
+      color: white;
+      border-radius: 999px;
+      padding: 15px 22px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer {
+      background: var(--black);
+      color: white;
+      padding: 45px 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .footer-links a:hover {
+      color: #ffaaaa;
+    }
+
+    .footer-small {
+      color: #bbb;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 950px) {
+
+      nav {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      nav.open {
+        display: flex;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      nav.open a {
+        padding: 10px;
+      }
+
+      .hero-grid,
+      .wellness-grid,
+      .shop-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .resource-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .featured-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .voices-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .container {
+        width: min(100% - 28px, var(--max-width));
+      }
+
+      .hero {
+        padding: 60px 0 50px;
+      }
+
+      section {
+        padding: 55px 0;
+      }
+
+      h1 {
+        font-size: 45px;
+      }
+
+      .hero-text {
+        font-size: 18px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+      }
+
+      .resource-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wellness-box {
+        padding: 28px 20px;
+      }
+
+      .wellness-box h2,
+      .newsletter h2 {
+        font-size: 31px;
+      }
+
+      .wellness-list {
+        grid-template-columns: 1fr;
+      }
+
+      .newsletter {
+        padding: 30px 20px;
+      }
+
+      .newsletter form {
+        flex-direction: column;
+      }
+
+      .newsletter input,
+      .newsletter button {
+        width: 100%;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+
+    <a href="#home" class="brand" aria-label="Neurodivergent Voices Home">
+      <span class="brand-icon">NV</span>
+
+      <span>
+        <span class="brand-name">Neurodivergent Voices</span>
+        <span class="brand-tagline">
+          Different minds. Real voices.
+        </span>
+      </span>
+    </a>
+
+    <button
+      class="mobile-menu"
+      id="menuButton"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+    >
+      Menu
+    </button>
+
+    <nav id="mainNav" aria-label="Main navigation">
+      <a href="#resources">Resources</a>
+      <a href="#wellness">Wellness</a>
+      <a href="#voices">Voices</a>
+      <a href="#tools">Free Tools</a>
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+    </nav>
+
+  </div>
+</header>
+
+
+<main id="home">
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="container hero-grid">
+
+      <div>
+
+        <span class="eyebrow">
+          Welcome to Neurodivergent Voices
+        </span>
+
+        <h1>
+          Different minds.<br>
+          Real voices.<br>
+          A place to belong.
+        </h1>
+
+        <p class="hero-text">
+          A welcoming resource center connecting neurodivergent
+          individuals, families, educators, and supporters with
+          information, practical tools, encouragement, and community.
+        </p>
+
+        <div class="hero-actions">
+
+          <a href="#resources" class="btn btn-primary">
+            Explore Resources →
+          </a>
+
+          <a href="#tools" class="btn btn-secondary">
+            Get Free Tools
+          </a>
+
+        </div>
+
+      </div>
+
+
+      <aside class="hero-card">
+
+        <h2>
+          You don't have to navigate it alone.
+        </h2>
+
+        <ul class="hero-list">
+
+          <li>
+            <span class="check">✓</span>
+            <span>Trusted neurodivergent resources</span>
+          </li>
+
+          <li>
+            <span class="check">✓</span>
+            <span>Practical wellness and daily-life tools</span>
+          </li>
+
+          <li>
+            <span class="check">✓</span>
+            <span>Education, employment and advocacy information</span>
+          </li>
+
+          <li>
+            <span class="check">✓</span>
+            <span>Stories that center real experiences</span>
+          </li>
+
+        </ul>
+
+      </aside>
+
+    </div>
+
+  </section>
+
+
+  <!-- RESOURCES -->
+
+  <section id="resources">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Resource Center
+        </span>
+
+        <h2>
+          Find what you need.
+        </h2>
+
+        <p>
+          Start with a category and explore trusted organizations,
+          practical information, and support.
+        </p>
+
+      </div>
+
+
+      <div class="resource-grid">
+
+        <article class="resource-card">
+
+          <div class="resource-icon">🧠</div>
+
+          <h3>Autism</h3>
+
+          <p>
+            Self-advocacy, communication, sensory needs,
+            disability rights and independent living.
+          </p>
+
+          <a
+            class="resource-link"
+            href="https://autisticadvocacy.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            Visit ASAN →
+          </a>
+
+        </article>
+
+
+        <article class="resource-card">
+
+          <div class="resource-icon">⚡</div>
+
+          <h3>ADHD</h3>
+
+          <p>
+            Executive functioning, organization, routines,
+            focus and practical support.
+          </p>
+
+          <a
+            class="resource-link"
+            href="https://chadd.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            Visit CHADD →
+          </a>
+
+        </article>
+
+
+        <article class="resource-card">
+
+          <div class="resource-icon">📚</div>
+
+          <h3>Learning Differences</h3>
+
+          <p>
+            Dyslexia, learning differences, educational
+            strategies and accommodations.
+          </p>
+
+          <a
+            class="resource-link"
+            href="https://www.understood.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            Visit Understood →
+          </a>
+
+        </article>
+
+
+        <article class="resource-card">
+
+          <div class="resource-icon">💼</div>
+
+          <h3>Employment</h3>
+
+          <p>
+            Workplace accommodations, disability employment
+            and career resources.
+          </p>
+
+          <a
+            class="resource-link"
+            href="https://askjan.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            Visit JAN →
+          </a>
+
+        </article>
+
+
+        <article class="resource-card">
+
+          <div class="resource-icon">🏫</div>
+
+          <h3>Education</h3>
+
+          <p>
+            IEPs, 504 plans, special education and
+            educational advocacy.
+          </p>
+
+          <a
+            class="resource-link"
+            href="https://www.parentcenterhub.org/"
+            target="_blank"
+            rel="noopener"
+          >
+            Visit CPIR →
+          </a>
+
+        </article>
+
+
+        <article class="resource-card">
+
+          <div class="resource-icon">❤️</div>
+
+          <h3>Wellness</h3>
+
+          <p>
+            Self-care, sensory regulation, routines and
+            everyday wellness tools.
+          </p>
+
+          <a class="resource-link" href="#wellness">
+            Explore Wellness →
+          </a>
+
+        </article>
+
+
+        <article class="resource-card">
+
+          <div class="resource-icon">⚖️</div>
+
+          <h3>Advocacy</h3>
+
+          <p>
+            Disability rights, accessibility and
+            self-advocacy information.
+          </p>
+
+          <a
+            class="resource-link"
+            href="https://www.ada.gov/"
+            target="_blank"
+            rel="noopener"
+          >
+            Visit ADA.gov →
+          </a>
+
+        </article>
+
+
+        <article class="resource-card">
+
+          <div class="resource-icon">👨‍👩‍👧</div>
+
+          <h3>Families</h3>
+
+          <p>
+            Resources for parents, caregivers, educators,
+            spouses and supporters.
+          </p>
+
+          <a href="#about" class="resource-link">
+            Learn More →
+          </a>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FEATURED RESOURCES -->
+
+  <section class="cream">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Trusted Resources
+        </span>
+
+        <h2>
+          Start with organizations you can trust.
+        </h2>
+
+      </div>
+
+
+      <div class="featured-grid">
+
+        <article class="featured-card">
+
+          <span class="tag">
+            AUTISM • SELF-ADVOCACY
+          </span>
+
+          <h3>
+            Autistic Self Advocacy Network
+          </h3>
+
+          <p>
+            ASAN is a nonprofit organization focused on
+            autistic self-advocacy, disability rights,
+            inclusion and community.
+          </p>
+
+          <a
+            href="https://autisticadvocacy.org/"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-primary"
+          >
+            Visit ASAN →
+          </a>
+
+        </article>
+
+
+        <article class="featured-card">
+
+          <span class="tag">
+            EMPLOYMENT • ACCOMMODATIONS
+          </span>
+
+          <h3>
+            Job Accommodation Network
+          </h3>
+
+          <p>
+            Free guidance about workplace accommodations
+            and disability employment issues.
+          </p>
+
+          <a
+            href="https://askjan.org/"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-secondary"
+          >
+            Visit JAN →
+          </a>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- WELLNESS -->
+
+  <section id="wellness">
+
+    <div class="container">
+
+      <div class="wellness-box">
+
+        <div class="wellness-grid">
+
+          <div>
+
+            <span
+              class="eyebrow"
+              style="color:#ffb1b1"
+            >
+              Free Wellness Tool
+            </span>
+
+            <h2>
+              My Neurodivergent Wellness Check-In
+            </h2>
+
+            <p>
+              A simple daily check-in to pause, notice
+              what you need, and make one thing easier.
+            </p>
+
+            <button
+              class="btn btn-primary"
+              onclick="window.print()"
+            >
+              Print / Save Tool
+            </button>
+
+          </div>
+
+
+          <ul class="wellness-list">
+
+            <li>☐ How is my energy?</li>
+            <li>☐ Am I overwhelmed?</li>
+            <li>☐ Is my environment comfortable?</li>
+            <li>☐ Have I eaten?</li>
+            <li>☐ Have I had enough water?</li>
+            <li>☐ Do I need quiet?</li>
+            <li>☐ Do I need movement?</li>
+            <li>☐ Do I need connection?</li>
+            <li>☐ What can I make easier today?</li>
+
+          </ul>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- VOICES -->
+
+  <section id="voices">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Neurodivergent Voices
+        </span>
+
+        <h2>
+          Your voice matters.
+        </h2>
+
+        <p>
+          A future home for experiences, perspectives,
+          challenges, successes and things people wish
+          others understood.
+        </p>
+
+      </div>
+
+
+      <div class="voices-grid">
+
+        <article class="voice-card">
+
+          <blockquote>
+            “I wish people understood that needing a
+            different environment doesn't mean I don't
+            want to participate.”
+          </blockquote>
+
+          <span>
+            Community Perspective
+          </span>
+
+        </article>
+
+
+        <article class="voice-card">
+
+          <blockquote>
+            “Sometimes the most helpful thing is simply
+            being believed and given time.”
+          </blockquote>
+
+          <span>
+            Community Perspective
+          </span>
+
+        </article>
+
+
+        <article class="voice-card">
+
+          <blockquote>
+            “Support should help people be themselves—
+            not force them to fit a mold.”
+          </blockquote>
+
+          <span>
+            Community Perspective
+          </span>
+
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FREE TOOLS -->
+
+  <section id="tools" class="cream">
+
+    <div class="container">
+
+      <div class="section-heading">
+
+        <span class="eyebrow">
+          Free Tools
+        </span>
+
+        <h2>
+          Practical tools for everyday life.
+        </h2>
+
+        <p>
+          We're building a growing library of free
+          printable resources.
+        </p>
+
+      </div>
+
+
+      <div class="resource-grid">
+
+        <article class="resource-card">
+          <div class="resource-icon">📝</div>
+          <h3>Daily Planner</h3>
+          <p>
+            Break your day into manageable steps.
+          </p>
+          <a href="#wellness" class="resource-link">
+            Coming Soon →
+          </a>
+        </article>
+
+
+        <article class="resource-card">
+          <div class="resource-icon">🎧</div>
+          <h3>Sensory Check-In</h3>
+          <p>
+            Notice sensory needs before overwhelm builds.
+          </p>
+          <a href="#wellness" class="resource-link">
+            Coming Soon →
+          </a>
+        </article>
+
+
+        <article class="resource-card">
+          <div class="resource-icon">💬</div>
+          <h3>Self-Advocacy Guide</h3>
+          <p>
+            Identify what you need and how to communicate it.
+          </p>
+          <a href="#wellness" class="resource-link">
+            Coming Soon →
+          </a>
+        </article>
+
+
+        <article class="resource-card">
+          <div class="resource-icon">🌱</div>
+          <h3>Wellness Tracker</h3>
+          <p>
+            Track energy, routines, sensory needs and wellness.
+          </p>
+          <a href="#shop" class="resource-link">
+            Coming Soon →
+          </a>
+        </article>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- SHOP -->
+
+  <section id="shop">
+
+    <div class="container">
+
+      <div class="shop-grid">
+
+        <div>
+
+          <span class="eyebrow">
+            Neurodivergent Voices Shop
+          </span>
+
+          <h2>
+            Tools made to support everyday life.
+          </h2>
+
+          <p class="muted">
+            The shop can grow into a collection of wellness
+            trackers, affirmation cards, planning tools,
+            sensory-friendly products, digital downloads
+            and curated wellness bundles.
+          </p>
+
+          <br>
+
+          <!-- Replace # with your Shopify store URL -->
+          <a
+            href="#"
+            class="btn btn-primary"
+            onclick="shopComingSoon(event)"
+          >
+            Visit the Shop →
+          </a>
+
+        </div>
+
+
+        <div class="shop-highlight">
+
+          <span class="tag">
+            COMING SOON
+          </span>
+
+          <h3>
+            Neurodivergent Voices Wellness Box
+          </h3>
+
+          <p>
+            A thoughtfully assembled collection of practical
+            tools, wellness resources, affirmation cards
+            and supportive products.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ABOUT -->
+
+  <section id="about" class="cream">
+
+    <div class="container about-grid">
+
+      <div>
+
+        <span class="eyebrow">
+          Our Mission
+        </span>
+
+        <h2>
+          Different doesn't mean less.
+        </h2>
+
+        <p class="muted">
+          Neurodivergent Voices exists to make information
+          easier to find, support easier to access, and
+          neurodivergent voices harder to ignore.
+        </p>
+
+        <br>
+
+        <p class="muted">
+          We believe people should be able to learn about
+          themselves without shame, find tools that work
+          for them, and know that they aren't alone.
+        </p>
+
+      </div>
+
+
+      <div class="about-box">
+
+        <h3>
+          Built with accessibility in mind.
+        </h3>
+
+        <p>
+          Clear language. Simple navigation. Strong
+          contrast. Keyboard-friendly controls.
+          Responsive design and reduced-motion support.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- EMAIL -->
+
+  <section>
+
+    <div class="container">
+
+      <div class="newsletter">
+
+        <span
+          class="eyebrow"
+          style="color:#ffd0d0"
+        >
+          Stay Connected
+        </span>
+
+        <h2>
+          Get new resources and free tools.
+        </h2>
+
+        <p>
+          Join the Neurodivergent Voices community for
+          new resources, practical tools and product
+          announcements.
+        </p>
+
+        <form
+          onsubmit="subscribe(event)"
+        >
+
+          <input
+            id="email"
+            type="email"
+            placeholder="Your email address"
+            aria-label="Email address"
+            required
+          >
+
+          <button type="submit">
+            Join the Community
+          </button>
+
+        </form>
+
+        <p
+          id="signupMessage"
+          aria-live="polite"
+          style="margin-top:15px"
+        ></p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+  <div class="container footer-grid">
+
+    <div>
+
+      <strong>
+        Neurodivergent Voices
+      </strong>
+
+      <p class="footer-small">
+        Different Minds. Real Voices. A Place to Belong.
+      </p>
+
+      <p class="footer-small">
+        Neurodivergent Voices provides educational
+        and informational resources and does not
+        provide medical, mental-health or legal advice.
+      </p>
+
+    </div>
+
+
+    <div class="footer-links">
+
+      <a href="#resources">Resources</a>
+      <a href="#wellness">Wellness</a>
+      <a href="#voices">Voices</a>
+      <a href="#tools">Free Tools</a>
+      <a href="#shop">Shop</a>
+      <a href="#about">About</a>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script>
+
+  /* Mobile navigation */
+
+  const menuButton =
+    document.getElementById("menuButton");
+
+  const mainNav =
+    document.getElementById("mainNav");
+
+  menuButton.addEventListener("click", function () {
+
+    const isOpen =
+      mainNav.classList.toggle("open");
+
+    menuButton.setAttribute(
+      "aria-expanded",
+      isOpen
+    );
+
+  });
+
+
+  /* Close mobile menu after clicking */
+
+  document.querySelectorAll("#mainNav a")
+    .forEach(function(link) {
+
+      link.addEventListener("click", function() {
+
+        mainNav.classList.remove("open");
+
+        menuButton.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+
+      });
+
+    });
+
+
+  /* Temporary shop button */
+
+  function shopComingSoon(event) {
+
+    event.preventDefault();
+
+    alert(
+      "Your Neurodivergent Voices shop will be connected here. Replace this button's # link with your Shopify store URL."
+    );
+
+  }
+
+
+  /* Temporary newsletter */
+
+  function subscribe(event) {
+
+    event.preventDefault();
+
+    const email =
+      document.getElementById("email").value;
+
+    const message =
+      document.getElementById("signupMessage");
+
+    message.textContent =
+      "Thanks for joining Neurodivergent Voices! " +
+      "Connect this form to your email platform to begin collecting subscribers.";
+
+    console.log("Subscriber:", email);
+
+  }
+
+</script>
+
+</body>
+</html>
