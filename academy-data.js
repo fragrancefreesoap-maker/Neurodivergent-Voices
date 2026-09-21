@@ -69,7 +69,8 @@ lessonSteps:["Notice","Model","Try Together","Practice","Apply","Explain","Creat
 make(g,s,u,l){
 const grade=this.grades[g],subject=this.subjects[s],unit=this.units[subject][u],n=l+1;
 const p=this.progressions[subject][g===0?0:1];
-const objective=p[0][u], concept=p[1][u], vocab=p[2][u];
+const scoped=this.gradeScopes[grade][subject][u];
+const objective=scoped, concept=p[1][u], vocab=p[2][u];
 const step=this.lessonSteps[l], title=this.titles(subject,u,l);
 const goal=g<=1?"I can "+objective+".":g<=3?"I can "+objective+" and explain my thinking.":"I can "+objective+" and support my thinking with an example, model, or evidence.";
 const examples={
