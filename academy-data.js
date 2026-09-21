@@ -113,3 +113,15 @@ const generic=[
 return {model:"A teacher or caregiver models one clear example of "+concept+" before the learner tries it.",activity:generic[(n-1)%generic.length]};
 }
 };
+// Subject-specific assessment templates. Each lesson gets a question format matched to its subject.
+const ASSESSMENT_TEMPLATES={
+"Language Arts & Reading":{q:"Which detail best supports the reading or language skill in this lesson?",a:["The detail that directly matches the skill","An unrelated detail","A detail from a different topic"]},
+"Mathematics":{q:"Which strategy best helps solve today's math problem?",a:["A strategy that represents the numbers and operations","Guessing without checking","Ignoring the quantities"]},
+"Science":{q:"Which observation or piece of evidence best supports today's science idea?",a:["Evidence that can be observed, measured, or modeled","A random guess","An unrelated opinion"]},
+"Social Studies":{q:"Which source or example best helps answer today's social studies question?",a:["A relevant map, document, image, timeline, or firsthand account","An unrelated object","A guess with no source"]},
+"Art":{q:"Which choice best demonstrates today's art skill?",a:["A deliberate use of the featured art element or technique","An unrelated material choice","Skipping the featured technique"]},
+"Music":{q:"Which musical choice best demonstrates today's skill?",a:["Using the featured beat, rhythm, melody, tempo, dynamics, or form","Ignoring the musical element","Making a choice unrelated to the music"]},
+"Social-Emotional Learning":{q:"Which response best demonstrates today's learning skill?",a:["A communication, regulation, boundary, or problem-solving strategy that fits the situation","Ignoring the situation","Assuming what another person feels without checking"]},
+"Physical Education & Movement":{q:"Which choice best demonstrates today's movement skill?",a:["Using the featured movement skill with attention to safety and personal needs","Ignoring safety","Stopping without trying an adapted option"]}
+};
+function getSubjectAssessment(subject){return ASSESSMENT_TEMPLATES[subject]||ASSESSMENT_TEMPLATES["Language Arts & Reading"];}
