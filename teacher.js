@@ -1,0 +1,22 @@
+const KEY="nva_teacher_dashboard_v1";const $=id=>document.getElementById(id);
+let db=(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{"students":[],"selected":null}')}catch(e){return{students:[],selected:null}}})();
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const esc=x=>String(x??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+function init(){
+ ACADEMY.grades.forEach((x,i)=>$("studentGrade").add(new Option(x,i)));
+ ACADEMY.subjects.forEach((x,i)=>$("subject").add(new Option(x,i)));
+ $("subject").onchange=fillUnits;$("unit").onchange=fillLessons;fillUnits();
+ $("addStudent").onclick=addStudent;$("assign").onclick=assign;$("saveNote").onclick=saveNote;
+ $("exportAll").onclick=exportAll;$("importAll").onchange=importAll;render();
+}
+function fillUnits(){const s=ACADEMY.subjects[+$("subject").value],u=$("unit");u.innerHTML="";ACADEMY.units[s].forEach((x,i)=>u.add(new Option("Unit "+(i+1)+": "+x,i)));fillLessons()}
+function fillLessons(){const l=$("lesson");l.innerHTML="";for(let i=0;i<10;i++)l.add(new Option("Lesson "+(i+1)+": "+ACADEMY.lessonSteps[i],i))}
+function addStudent(){const name=$("studentName").value.trim();if(!name)return alert("Enter a student name or nickname.");const s={id:"s_"+Date.now(),name,grade:+$("studentGrade").value,assignments:[],notes:[]};db.students.push(s);db.selected=s.id;$("studentName").value="";save();render()}
+function selected(){return db.students.find(s=>s.id===db.selected)}
+function render(){const box=$("students");box.innerHTML=db.students.length?db.students.map(s=>{const done=s.assignments.filter(a=>a.status==="Demonstrated"||a.status==="Mastered").length;return '<div class="card student"><h3>'+esc(s.name)+'</h3><p>'+esc(ACADEMY.grades[s.grade])+'</p><div class="progress"><i style="width:'+Math.min(100,done/Math.max(1,s.assignments.length)*100)+'%"></i></div><p>'+done+' of '+s.assignments.length+' assigned lessons completed</p><button class="secondary" data-student="'+s.id+'">Open profile</button></div>'}).join(""):'<p class="muted">No student profiles yet.</p>';document.querySelectorAll("[data-student]").forEach(b=>b.onclick=()=>{db.selected=b.dataset.student;save();render()});const s=selected();$("selected").classList.toggle("hidden",!s);if(s)renderSelected(s)}
+function renderSelected(s){$("selectedTitle").textContent=s.name+" • "+ACADEMY.grades[s.grade];$("assignments").innerHTML='<h3>Assigned lessons</h3>'+(s.assignments.length?'<table><thead><tr><th>Lesson</th><th>Status</th></tr></thead><tbody>'+s.assignments.map((a,i)=>'<tr><td>'+esc(a.title)+'</td><td><select data-status="'+i+'"><option '+(a.status==="Assigned"?"selected":"")+' >Assigned</option><option '+(a.status==="Learning"?"selected":"")+'>Learning</option><option '+(a.status==="Demonstrated"?"selected":"")+'>Demonstrated</option><option '+(a.status==="Mastered"?"selected":"")+'>Mastered</option></select></td></tr>').join("")+'</tbody></table>':'<p class="muted">No assignments yet.</p>');document.querySelectorAll("[data-status]").forEach(x=>x.onchange=()=>{s.assignments[+x.dataset.status].status=x.value;save();render()});$("notes").innerHTML=s.notes.length?'<h4>Observations</h4>'+s.notes.map(n=>'<div class="card"><strong>'+esc(n.date)+'</strong><p>'+esc(n.text)+'</p></div>').join(""):""}
+function assign(){const s=selected();if(!s)return;const g=s.grade,sub=+$("subject").value,u=+$("unit").value,l=+$("lesson").value,r=ACADEMY.make(g,sub,u,l);if(!s.assignments.some(a=>a.id===r.id))s.assignments.push({id:r.id,title:r.title,status:"Assigned"});save();render()}
+function saveNote(){const s=selected(),text=$("note").value.trim();if(!s||!text)return;s.notes.unshift({date:new Date().toLocaleString(),text});$("note").value="";save();render()}
+function exportAll(){const blob=new Blob([JSON.stringify({academy:"Neurodivergent Voices Academy",version:1,exported:new Date().toISOString(),dashboard:db},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="academy-teacher-dashboard.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+function importAll(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const x=JSON.parse(reader.result);if(!x.dashboard||!Array.isArray(x.dashboard.students))throw 0;db=x.dashboard;save();render();alert("Dashboard imported.");}catch(err){alert("That file could not be imported as an Academy dashboard.")}};reader.readAsText(file)}
+document.addEventListener("DOMContentLoaded",init);
