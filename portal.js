@@ -1,0 +1,1 @@
+const $=id=>document.getElementById(id);$("continue").onclick=()=>{$("msg").textContent="Online accounts are not enabled yet. No credentials were collected or sent. Use the local dashboard for now.";};$("local").onclick=()=>{location.href="teacher.html"};
