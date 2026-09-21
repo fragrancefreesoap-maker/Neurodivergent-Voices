@@ -17,6 +17,7 @@ function fillLessons(){
  for(let i=0;i<10;i++)l.add(new Option("Lesson "+(i+1)+": "+ACADEMY.lessonSteps[i],i));
 }
 function current(){return ACADEMY.make(+$("grade").value,+$("subject").value,+$("unit").value,+$("lesson").value)}
+function subjectAssessment(subject,lesson){const t=getSubjectAssessment(subject);const i=(lesson-1)%t.a.length;return {question:t.q,answers:t.a,correct:i};}
 function esc(x){return String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]))}
 function activityPlan(r){
  return [
