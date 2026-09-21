@@ -125,3 +125,60 @@ const ASSESSMENT_TEMPLATES={
 "Physical Education & Movement":{q:"Which choice best demonstrates today's movement skill?",a:["Using the featured movement skill with attention to safety and personal needs","Ignoring safety","Stopping without trying an adapted option"]}
 };
 function getSubjectAssessment(subject){return ASSESSMENT_TEMPLATES[subject]||ASSESSMENT_TEMPLATES["Language Arts & Reading"];}
+
+// Concrete, grade-aware question generation. Templates vary by subject and grade so lessons can produce a usable quick-check immediately.
+function makeQuestion(grade,subject,unit,lesson,goal){
+ const g=grade, n=lesson, u=unit;
+ const bank={
+ "Mathematics":[
+  ["Which representation best shows the numbers in this problem?",["A model with the quantities labeled","An unrelated picture","No representation"],0],
+  ["Which operation or strategy matches the problem?",["The operation named by the situation","A random operation","No operation"],0],
+  ["What should you do first?",["Identify what is known and what must be found","Skip the problem","Change the numbers"],0],
+  ["Which answer can be checked with the original problem?",["An answer that makes the equation or model true","Any number","A blank answer"],0]
+ ],
+ "Language Arts & Reading":[
+  ["Which detail best supports the main idea or reading skill?",["A detail directly connected to the text","An unrelated detail","A detail not in the text"],0],
+  ["What should a reader do to understand an unfamiliar word?",["Use context, word parts, or a reference tool","Ignore the word","Choose a meaning at random"],0],
+  ["Which response uses evidence from the text?",["A response that points to a specific detail","A response with no text evidence","A response about another topic"],0],
+  ["Which sentence best communicates one clear idea?",["A complete sentence focused on the topic","A collection of unrelated words","A sentence with no clear idea"],0]
+ ],
+ "Science":[
+  ["Which is the best evidence for the science idea?",["An observation, measurement, or model","A guess with no observation","An unrelated fact"],0],
+  ["What should a scientist do before making a conclusion?",["Collect and examine evidence","Choose an answer first","Ignore observations"],0],
+  ["Which change or pattern could be tested or observed?",["A measurable change related to the question","A random event","Something that cannot be observed"],0],
+  ["Which model best represents the system being studied?",["A model showing the relevant parts and relationships","An unrelated drawing","A blank model"],0]
+ ],
+ "Social Studies":[
+  ["Which source would best help answer the question?",["A relevant map, timeline, document, image, or firsthand account","An unrelated source","A guess"],0],
+  ["Which detail is evidence of how a community works?",["A documented role, rule, resource, or institution","An unrelated detail","A personal guess"],0],
+  ["What helps explain why an event happened?",["Evidence about causes and circumstances","A random opinion","A detail from an unrelated event"],0],
+  ["Which action shows civic participation?",["A constructive action that responds to a shared community issue","Ignoring the issue","Changing the evidence"],0]
+ ],
+ "Art":[
+  ["Which choice best demonstrates the featured art element or technique?",["Use it deliberately in the artwork","Avoid it completely","Use an unrelated technique"],0],
+  ["What can an artist change to create emphasis?",["Line, color, value, size, placement, or contrast","Nothing","Only the title"],0],
+  ["Which step supports revision?",["Look at the work, identify a change, and try it","Never review the work","Discard the idea immediately"],0],
+  ["Which response describes artwork using evidence?",["Point to visible choices and explain their effect","Only say it is good","Guess the artist's thoughts"],0]
+ ],
+ "Music":[
+  ["Which choice demonstrates the featured musical element?",["Use the beat, rhythm, melody, tempo, dynamics, or form intentionally","Ignore it","Use an unrelated element"],0],
+  ["What should a performer do to keep a steady beat?",["Listen, count, tap, or move consistently","Change randomly","Stop after every beat"],0],
+  ["Which change can make music sound different?",["Changing tempo or dynamics","Changing nothing","Ignoring the sound"],0],
+  ["Which response uses musical evidence?",["Describe what you hear using musical vocabulary","Only say you like it","Talk about an unrelated topic"],0]
+ ],
+ "Social-Emotional Learning":[
+  ["Which response best fits a need or communication situation?",["Communicate the need using a preferred effective mode","Hide the need","Assume another person's need"],0],
+  ["What is a useful first step in a challenging situation?",["Notice the situation and identify what support is needed","React without checking","Ignore safety"],0],
+  ["Which choice respects a boundary?",["Ask, listen to the response, and adjust","Continue after a no","Assume consent"],0],
+  ["Which strategy can support regulation?",["Use a chosen sensory, movement, communication, or quiet strategy","Force one strategy on everyone","Ignore the person's signals"],0]
+ ],
+ "Physical Education & Movement":[
+  ["Which choice best demonstrates safe movement?",["Use appropriate space, equipment, and an adapted movement when needed","Ignore safety","Use equipment unsafely"],0],
+  ["What helps improve a movement skill?",["Practice the movement with feedback and appropriate repetition","Never practice","Change the goal every attempt"],0],
+  ["Which choice supports sustained activity?",["Use pacing, water, rest, and movement breaks as needed","Ignore body signals","Avoid all recovery"],0],
+  ["Which response shows progress toward a movement goal?",["Compare attempts using a simple measure","Guess without observing","Change the goal without recording"],0]
+ ]};
+ const list=bank[subject]||bank["Language Arts & Reading"];
+ const item=list[(u+n+g)%list.length];
+ return {question:item[0],answers:item[1],correct:item[2],goal:goal};
+}
