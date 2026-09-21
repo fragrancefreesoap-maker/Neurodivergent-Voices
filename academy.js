@@ -28,7 +28,7 @@ function openLesson(){
  '<h3>Learn</h3><p>'+esc(r.learn)+'</p>'+
  '<h3>Teacher / Caregiver Model</h3><p>'+esc(r.model)+'</p>'+
  '<h3>Practice Together</h3><p>'+esc(r.practice)+'</p>'+
- '<h3>Activity</h3><p>'+esc(r.activity)+'</p>'+
+ '<h3>Activity</h3><p>'+esc(r.activity)+'</p>'+'<div class="activityGrid"><div class="activityCard"><strong>Choose</strong><p>Select a response.</p><button data-action="choose">Choose</button></div><div class="activityCard"><strong>Match / Sort</strong><p>Connect or group examples.</p><button data-action="match">Try it</button></div><div class="activityCard"><strong>Show</strong><p>Demonstrate the skill your way.</p><button data-action="show">Show what you know</button></div></div><div id="activityFeedback" class="feedback" aria-live="polite">Choose an activity to begin.</div>'+
  '<h3>Ways to Respond</h3><p>'+esc(r.response)+'</p>'+
  '<h3>Visual Support</h3><p>'+esc(r.visual)+'</p>'+
  '<h3>AAC Support</h3><p>'+esc(r.aac)+'</p>'+
@@ -37,7 +37,7 @@ function openLesson(){
  '<h3>Extension</h3><p>'+esc(r.extension)+'</p>'+
  '<div class="actions"><button class="primary" id="done">Mark demonstrated</button><button class="secondary" id="break">Take a break</button></div>'+
  '<p id="status">'+(p[r.id]?"✓ Demonstrated":"Not started")+'</p>';
- $("done").onclick=()=>{const q=state();q[r.id]="Demonstrated";save(q);$("status").textContent="✓ Demonstrated — progress saved on this device."};
+ document.querySelectorAll("[data-action]").forEach(btn=>btn.onclick=()=>{document.querySelectorAll("[data-action]").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");$("activityFeedback").textContent=btn.dataset.action==="choose"?"Choose: identify one example that matches the learning goal.":btn.dataset.action==="match"?"Match / Sort: connect or group two examples and explain the connection.":"Show: demonstrate the target skill by speaking, pointing, writing, drawing, typing, AAC, matching, building, moving, or another effective mode."});$("done").onclick=()=>{const q=state();q[r.id]="Demonstrated";save(q);$("status").textContent="✓ Demonstrated — progress saved on this device."};
  $("break").onclick=()=>alert(r.break);
  window.scrollTo({top:v.offsetTop-80,behavior:"smooth"});
 }
