@@ -35,15 +35,29 @@ function openLesson(){
  '<h3>Movement / Regulation Break</h3><p>'+esc(r.break)+'</p>'+
  '<h3>Check for Learning</h3><p>'+esc(r.check)+'</p>'+
  '<h3>Extension</h3><p>'+esc(r.extension)+'</p>'+
- '<div class="actions"><button class="primary" id="done">Mark demonstrated</button><button class="secondary" id="break">Take a break</button></div>'+
+ '<div class="actions"><button class="primary" id="done">Mark demonstrated</button><button class="secondary" id="mastered">Mark mastered</button><button class="secondary" id="break">Take a break</button></div>'+
  '<p id="status">'+(p[r.id]?"✓ Demonstrated":"Not started")+'</p>';
- document.querySelectorAll("[data-action]").forEach(btn=>btn.onclick=()=>{document.querySelectorAll("[data-action]").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");$("activityFeedback").textContent=btn.dataset.action==="choose"?"Choose: identify one example that matches the learning goal.":btn.dataset.action==="match"?"Match / Sort: connect or group two examples and explain the connection.":"Show: demonstrate the target skill by speaking, pointing, writing, drawing, typing, AAC, matching, building, moving, or another effective mode."});$("done").onclick=()=>{const q=state();q[r.id]="Demonstrated";save(q);$("status").textContent="✓ Demonstrated — progress saved on this device."};
+ document.querySelectorAll("[data-action]").forEach(btn=>btn.onclick=()=>{document.querySelectorAll("[data-action]").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");$("activityFeedback").textContent=btn.dataset.action==="choose"?"Choose: identify one example that matches the learning goal.":btn.dataset.action==="match"?"Match / Sort: connect or group two examples and explain the connection.":"Show: demonstrate the target skill by speaking, pointing, writing, drawing, typing, AAC, matching, building, moving, or another effective mode."});$("done").onclick=()=>markMastery("Demonstrated");$("mastered").onclick=()=>markMastery("Mastered");
  $("break").onclick=()=>alert(r.break);
  window.scrollTo({top:v.offsetTop-80,behavior:"smooth"});
 }
-function showProgress(){
- const done=Object.keys(state()).length,total=7*8*10*10,v=$("progressView");v.classList.remove("hidden");
- v.innerHTML='<h2>Academy progress</h2><p><strong>'+done+' of '+total+'</strong> lessons demonstrated.</p><p>Progress is saved on this device.</p><p>Mastery stages: Not Started → Learning → Practicing → Demonstrated → Mastered.</p>';
+function masteryLabel(status){return status||"Not Started"}
+function renderProgress(){
+ const p=state(), total=7*8*10*10, done=Object.values(p).filter(x=>x==="Demonstrated"||x==="Mastered").length;
+ const v=$("progressView");v.classList.remove("hidden");
+ const byGrade=ACADEMY.grades.map((g,i)=>{
+   let d=0; for(const k in p){if(k.startsWith(i+"-")&&(p[k]==="Demonstrated"||p[k]==="Mastered"))d++}
+   return {g,d,total:8*10*10};
+ });
+ v.innerHTML='<h2>Academy progress</h2><p><strong>'+done+' of '+total+'</strong> lessons demonstrated or mastered.</p>'+
+ '<div class="activityGrid">'+byGrade.map(x=>'<div class="activityCard"><strong>'+esc(x.g)+'</strong><p>'+x.d+' / '+x.total+' completed</p><div role="progressbar" aria-valuenow="'+x.d+'" aria-valuemin="0" aria-valuemax="'+x.total+'"><progress max="'+x.total+'" value="'+x.d+'" style="width:100%"></progress></div></div>').join("")+'</div>'+
+ '<p>Progress is stored locally on this device. Mastery stages: Not Started → Learning → Practicing → Demonstrated → Mastered.</p>';
  window.scrollTo({top:v.offsetTop-80,behavior:"smooth"});
 }
+function showProgress(){renderProgress();}
+function markMastery(status){
+ const r=current(),q=state();q[r.id]=status;save(q);
+ const s=$("status");if(s)s.textContent="✓ "+masteryLabel(status)+" — progress saved on this device.";
+}
+
 document.addEventListener("DOMContentLoaded",populate);
