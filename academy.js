@@ -82,7 +82,7 @@ function openLesson(){
         $("activityFeedback").textContent=n===3?"✓ All three exercises completed.":"You have completed "+n+" of 3 exercises.";
       });
     }
-    box.scrollIntoView({behavior:"smooth",block:"center"});
+    box.style.display="block"; box.hidden=false; box.scrollIntoView({behavior:"smooth",block:"center"});
   });
   $("done").onclick=()=>{
     if(!Object.values(activityState).every(Boolean)){ $("activityFeedback").textContent="Complete an exercise in Choose, Match / Sort, and Show What You Know first."; return; }
