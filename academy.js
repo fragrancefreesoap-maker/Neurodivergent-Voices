@@ -26,6 +26,8 @@ const save=p=>localStorage.setItem(STORAGE,JSON.stringify(p));
 function record(id){return state()[id]||{status:"Not Started",attempts:0,correct:0,score:0,bestScore:0,streak:0,lastAttempt:null,masteryReady:false};}
 
 function populate(){
+ if(typeof ACADEMY==="undefined"){ throw new Error("Academy data did not load. Please refresh the page."); }
+
  const g=$("grade"),s=$("subject");
  ACADEMY.grades.forEach((x,i)=>g.add(new Option(x,i)));
  ACADEMY.subjects.forEach((x,i)=>s.add(new Option(x,i)));
@@ -157,4 +159,15 @@ function renderProgress(){
  $("resetProgress").onclick=()=>{if(confirm("Reset all Academy progress stored on this device?")){localStorage.removeItem(STORAGE);renderProgress()}};
 }
 function showProgress(){renderProgress()}
-document.addEventListener("DOMContentLoaded",populate);
+document.addEventListener("DOMContentLoaded",()=>{
+ try{
+   populate();
+   const openBtn=$("openLessonBtn"),progressBtn=$("progressBtn");
+   if(openBtn) openBtn.addEventListener("click",openLesson);
+   if(progressBtn) progressBtn.addEventListener("click",showProgress);
+ }catch(e){
+   const v=$("lessonView");
+   if(v){v.classList.remove("hidden");v.innerHTML='<h2>Academy setup needs one more refresh</h2><p><strong>Error:</strong> '+esc(e&&e.message?e.message:e)+'</p><button class="secondary" type="button" onclick="location.reload()">Refresh Academy</button>';}
+   console.error("Academy initialization error:",e);
+ }
+});
