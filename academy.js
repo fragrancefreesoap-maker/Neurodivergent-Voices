@@ -76,6 +76,7 @@ function assessmentHTML(r,rec){
  '</div><p id="assessmentFeedback" class="feedback" aria-live="polite">Choose an answer. You may use the model, ask for help, or try again.</p><p class="small">Mastery uses successful demonstrations across different examples. Communication mode does not affect the academic result.</p></div>';
 }
 function openLesson(){
+ try{
  const r=current(),rec=record(r.id),plan=getActivity(r.id),v=$("lessonView");
  v.classList.remove("hidden");
  v.innerHTML='<span class="pill">'+esc(r.grade)+' • '+esc(r.subject)+' • Unit '+r.unit+' • Lesson '+r.lesson+'</span>'+
@@ -99,6 +100,12 @@ function openLesson(){
  $("break").onclick=()=>alert(r.break);
  $("practiceAgain").onclick=()=>openLesson();
  window.scrollTo({top:v.offsetTop-80,behavior:"smooth"});
+ }catch(e){
+   const v=$("lessonView");
+   v.classList.remove("hidden");
+   v.innerHTML='<h2>Lesson could not load</h2><p>We found a problem loading this lesson. The Academy has been updated with a diagnostic message.</p><p><strong>Error:</strong> '+esc(e&&e.message?e.message:e)+'</p><button class="secondary" onclick="location.reload()">Reload Academy</button>';
+   console.error(e);
+ }
 }
 function answerQuestion(r,button){
  const p=state(),rec=record(r.id),qs=assessmentQuestions(r);
