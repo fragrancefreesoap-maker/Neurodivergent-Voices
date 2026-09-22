@@ -65,12 +65,14 @@ progressions:{
 ["body awareness and space","static and dynamic balance","locomotor movement","coordination","strength and endurance","rhythm and movement","games and rules","safety","healthy habits","personal goal"],
 ["body","balance","travel","coordinate","strength","rhythm","game","safety","habit","goal"]
 ]},
+gradeScopes:{},
 lessonSteps:["Notice","Model","Try Together","Practice","Apply","Explain","Create","Compare","Show What You Know","Reflect"],
 make(g,s,u,l){
 const grade=this.grades[g],subject=this.subjects[s],unit=this.units[subject][u],n=l+1;
 const p=this.progressions[subject][g===0?0:1];
-const scoped=this.gradeScopes[grade][subject][u];
-const objective=scoped, concept=p[1][u], vocab=p[2][u];
+const scoped=this.gradeScopes[grade]?.[subject]?.[u];
+const baseObjective=p[0][u];
+const objective=scoped||baseObjective, concept=p[1][u], vocab=p[2][u];
 const step=this.lessonSteps[l], title=this.titles(subject,u,l);
 const goal=g<=1?"I can "+objective+".":g<=3?"I can "+objective+" and explain my thinking.":"I can "+objective+" and support my thinking with an example, model, or evidence.";
 const examples={
@@ -113,6 +115,22 @@ const generic=[
 return {model:"A teacher or caregiver models one clear example of "+concept+" before the learner tries it.",activity:generic[(n-1)%generic.length]};
 }
 };
+// Build grade-specific objectives at runtime so every grade/subject/unit has a valid scope.
+ACADEMY.grades.forEach((grade,g)=>{
+  ACADEMY.gradeScopes[grade]={};
+  ACADEMY.subjects.forEach(subject=>{
+    const base=ACADEMY.progressions[subject][g===0?0:1][0];
+    ACADEMY.gradeScopes[grade][subject]=base.map(x=>{
+      if(g===0)return "explore and demonstrate "+x;
+      if(g===1)return "use concrete examples to "+x;
+      if(g===2)return "practice and apply "+x;
+      if(g===3)return "apply "+x+" in familiar situations";
+      if(g===4)return "explain and apply "+x;
+      if(g===5)return "compare, analyze, and apply "+x;
+      return "apply, justify, and extend "+x;
+    });
+  });
+});
 // Subject-specific assessment templates. Each lesson gets a question format matched to its subject.
 const ASSESSMENT_TEMPLATES={
 "Language Arts & Reading":{q:"Which detail best supports the reading or language skill in this lesson?",a:["The detail that directly matches the skill","An unrelated detail","A detail from a different topic"]},
