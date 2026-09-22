@@ -111,8 +111,9 @@ function answerQuestion(r,button){
    rec.bestScore=Math.max(rec.bestScore,rec.score);
    if(rec.correct>=3){rec.status="Mastered";rec.masteryReady=true}
    else if(rec.correct>=1){rec.status="Demonstrated"}
+   const stepsDone=getActivity(r.id).every(x=>x.done);
    feedback.textContent=rec.status==="Mastered"
-     ?"Correct. You demonstrated the skill across three examples. Mastered!"
+     ?(stepsDone?"Correct. You demonstrated the skill across three examples. Mastered! Now you can move to the next lesson.":"Correct. You demonstrated the skill across three examples. Finish the three activity steps to unlock the next lesson.")
      :"Correct. You demonstrated this example. Try the next example.";
    feedback.dataset.result="correct";
  }else{
@@ -124,7 +125,7 @@ function answerQuestion(r,button){
  p[r.id]=rec;save(p);
  $("masteryMessage").innerHTML="Current stage: <strong>"+esc(rec.status)+"</strong> • "+rec.attempts+" attempts • "+rec.correct+" successful checks • Best score "+rec.bestScore+"%.";
  const next=$("nextLesson");
- if(rec.status==="Demonstrated"||rec.status==="Mastered"){
+ if((rec.status==="Demonstrated"||rec.status==="Mastered") && getActivity(r.id).every(x=>x.done)){
    next.classList.remove("hidden");
    next.onclick=()=>goNext(r);
  }
