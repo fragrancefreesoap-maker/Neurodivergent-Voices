@@ -59,15 +59,34 @@ function openLesson(){
    "<h3>Check for Learning</h3><p>"+esc(r.check)+"</p>"+
    "<h3>Extension</h3><p>"+esc(r.extension)+"</p>"+
    '<div class="actions"><button class="primary" id="done" type="button">Mark demonstrated</button></div><p id="status">'+(p[r.id]?"✓ Demonstrated":"Not started")+"</p>";
-  const done={choose:false,match:false,show:false};
+  const activityState={choose:false,match:false,show:false};
+  const makeOptions=(type)=>{
+    if(type==="choose") return ["I can point to it","I can say it","I can type it"];
+    if(type==="match") return ["Same idea","Different idea","Not sure"];
+    return ["I can draw it","I can write it","I can explain it"];
+  };
   document.querySelectorAll("[data-step]").forEach(b=>b.onclick=()=>{
-   done[b.dataset.step]=true;b.classList.add("selected");
-   const n=Object.values(done).filter(Boolean).length;
-   $("activityFeedback").textContent=n===3?"✓ All three activities completed. You can mark this lesson demonstrated.":n+" of 3 activity steps completed.";
+    const type=b.dataset.step;
+    const card=b.closest(".activityCard");
+    let box=card.querySelector(".exerciseBox");
+    if(!box){
+      box=document.createElement("div"); box.className="exerciseBox";
+      box.innerHTML="<p><strong>Try the exercise:</strong> Choose the response that works for you.</p><div class=\"exerciseChoices\"></div><p class=\"exerciseResult\" aria-live=\"polite\"></p>";
+      card.appendChild(box);
+      box.querySelector(".exerciseChoices").innerHTML=makeOptions(type).map((x,i)=>'<button type="button" class="exerciseChoice" data-choice="'+i+'">'+esc(x)+"</button>").join("");
+      box.querySelectorAll(".exerciseChoice").forEach(ch=>ch.onclick=()=>{
+        box.querySelectorAll(".exerciseChoice").forEach(x=>x.classList.remove("selected"));
+        ch.classList.add("selected"); activityState[type]=true;
+        box.querySelector(".exerciseResult").textContent="✓ Response recorded. You can try another response or continue.";
+        const n=Object.values(activityState).filter(Boolean).length;
+        $("activityFeedback").textContent=n===3?"✓ All three exercises completed.":"You have completed "+n+" of 3 exercises.";
+      });
+    }
+    box.scrollIntoView({behavior:"smooth",block:"center"});
   });
   $("done").onclick=()=>{
-   if(!Object.values(done).every(Boolean)){ $("activityFeedback").textContent="Complete Choose, Match / Sort, and Show What You Know first."; return; }
-   const q=getProgress();q[r.id]="Demonstrated";setProgress(q);$("status").textContent="✓ Demonstrated — progress saved on this device.";
+    if(!Object.values(activityState).every(Boolean)){ $("activityFeedback").textContent="Complete an exercise in Choose, Match / Sort, and Show What You Know first."; return; }
+    const q=getProgress();q[r.id]="Demonstrated";setProgress(q);$("status").textContent="✓ Demonstrated — progress saved on this device.";
   };
   v.scrollIntoView({behavior:"smooth",block:"start"});
  }catch(e){showError(e);console.error(e)}
