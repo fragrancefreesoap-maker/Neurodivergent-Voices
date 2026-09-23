@@ -38,6 +38,7 @@ function makeLesson(){
 }
 function openLesson(){
  try{
+ const status=$("academyStatus");if(status)status.textContent="Opening lesson…";
   const r=makeLesson(), p=getProgress(), v=$("lessonView");
   if(!r)throw new Error("No lesson was returned.");
   v.classList.remove("hidden");
