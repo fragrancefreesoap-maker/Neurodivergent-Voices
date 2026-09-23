@@ -1,3 +1,42 @@
+// Self-contained fallback so the lesson opener still works if the data file is delayed or cached.
+if(typeof window.ACADEMY==="undefined"){
+  window.ACADEMY={
+    grades:["Pre-K","Kindergarten","Grade 1","Grade 2","Grade 3","Grade 4","Grade 5"],
+    subjects:["Language Arts & Reading","Mathematics","Science","Social Studies","Art","Music","Social-Emotional Learning","Physical Education & Movement"],
+    units:{},
+    lessonSteps:["Explore","Learn","Practice","Apply","Explain","Create","Compare","Solve","Show What You Know","Reflect"}
+  };
+  ACADEMY.subjects.forEach(function(s){ACADEMY.units[s]=Array.from({length:10},function(_,i){return "Unit "+(i+1);});});
+  ACADEMY.make=function(g,s,u,l){
+    const grade=ACADEMY.grades[g]||"Grade";
+    const subject=ACADEMY.subjects[s]||"Learning";
+    const unit=ACADEMY.units[subject][u]||("Unit "+(u+1));
+    const step=ACADEMY.lessonSteps[l]||"Practice";
+    const topic=subject==="Mathematics"?"numbers, patterns, and problem solving":
+      subject==="Science"?"observations, evidence, and explanations":
+      subject==="Language Arts & Reading"?"reading, language, and communication":
+      subject==="Social Studies"?"people, places, communities, and evidence":
+      subject==="Art"?"lines, shapes, materials, and creative expression":
+      subject==="Music"?"sound, rhythm, movement, and musical expression":
+      subject==="Social-Emotional Learning"?"communication, self-advocacy, regulation, and relationships":
+      "movement, coordination, safety, and physical activity";
+    return {id:grade+"-"+subject+"-"+u+"-"+l,grade,subject,unit:u+1,lesson:l+1,
+      title:unit+" — Lesson "+(l+1)+": "+step,
+      goal:grade+" learners will "+step.toLowerCase()+" "+topic+".",
+      vocabulary:[subject.split(" ")[0],"practice","strategy","evidence"],
+      learn:"Today we will explore "+topic+" using clear examples, visuals, and choices.",
+      model:"The teacher or caregiver models one example, thinks aloud, and checks for understanding.",
+      practice:"Work through one example together. The learner may speak, point, write, draw, type, use AAC, match, build, or move.",
+      activity:"Complete a short task connected to the learning goal, then choose a way to demonstrate understanding.",
+      response:"Use any effective communication mode: speech, AAC, pointing, selecting, writing, typing, drawing, building, or movement.",
+      visual:"Use a first-then card, example, picture, symbol, checklist, or step-by-step model.",
+      aac:"Offer core words such as help, more, same, different, again, finished, yes, and no.",
+      break:"Take a movement, sensory, quiet, water, or position-change break whenever needed.",
+      check:"Demonstrate the learning goal with support as needed.",
+      extension:"Try another example or apply the skill in a familiar real-world situation."
+    };
+  };
+}
 const STORAGE="nva_academy_progress_v4";
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
