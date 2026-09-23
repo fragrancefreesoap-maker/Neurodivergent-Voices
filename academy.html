@@ -15,5 +15,45 @@ main{padding:38px 0 70px}.hero{position:relative;overflow:hidden;background:line
 .muted{color:var(--muted)}.hidden{display:none!important}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:850px){.navlinks a:nth-child(n+3){display:none}.controls{grid-template-columns:1fr 1fr}.activityGrid{grid-template-columns:1fr}.hero{padding:32px 24px}}
 @media(max-width:560px){.wrap{width:min(100% - 22px,1160px)}nav{min-height:64px}.brand small{font-size:10px}.navlinks a{font-size:12px}.controls{grid-template-columns:1fr}.hero{border-radius:20px;padding:27px 20px}.hero h1{font-size:39px}.learningCard,.lesson{padding:20px;border-radius:20px}}
-</style><style>.lesson{display:block!important}.hidden{display:none!important}.controls{display:grid;gap:12px}.controls select{min-height:48px}.actions{display:flex;gap:12px;flex-wrap:wrap}.actions button{min-height:48px;padding:10px 18px;cursor:pointer}</style></head>
-<body><header><div class="wrap"><nav><a class="brand" href="index.html"><span class="brandMark" aria-hidden="true">NV</span><span>Neurodivergent Voices<small>Academy • Pre-K–5</small></span></a><div class="navlinks"><a href="index.html">Home</a><a href="academy-dashboard.html">Dashboard</a><a href="academy-progress.html">Progress</a><a href="teacher.html">Teacher / Caregiver</a></div></nav></div></header><main class="wrap"><section class="hero"><span class="eyebrow">NEURODIVERGENT-AFFIRMING LEARNING</span><h1>Neurodivergent Voices Academy</h1><p class="muted">Choose a grade, subject, unit, and lesson. Every lesson keeps the academic goal clear while offering flexible ways to access, practice, communicate, and demonstrate learning.</p></section><section class="learningCard"><div class="sectionHead"><div><h2>Start learning</h2><p>Choose your path and begin a lesson.</p></div></div><div class="controls"><label>Grade<select id="grade"></select></label><label>Subject<select id="subject"></select></label><label>Unit<select id="unit"></select></label><label>Lesson<select id="lesson"></select></label></div><div class="actions"><button class="primary" id="openLessonBtn" type="button">Open lesson</button><button class="secondary" id="progressBtn" type="button">View progress</button></div></section><section id="lessonView" class="lesson hidden" aria-live="polite"></section><p id="academyStatus" class="muted" aria-live="polite">Academy is loading…</p><section id="progressView" class="lesson hidden"></section></main><script src="academy-data.js?v=20260921d"></script><script src="academy.js?v=20260921d"></script></body></html>
+</style><style>.lesson{display:block!important}.hidden{display:none!important}.controls{display:grid;gap:12px}.controls select{min-height:48px}.actions{display:flex;gap:12px;flex-wrap:wrap}.actions button{min-height:48px;padding:10px 18px;cursor:pointer}</style><style id="academy-hub-theme">
+.academyOverview,.gradeSection{margin-top:26px}.statGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.statCard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.statCard strong{display:block;font-size:30px;line-height:1;color:var(--brand)}.statCard span{display:block;margin-top:7px;color:var(--muted);font-size:13px;font-weight:750}.pathGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}.pathCard{display:flex;gap:13px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:20px;padding:19px;text-decoration:none;box-shadow:var(--shadow)}.pathCard:hover{border-color:#b9c9da;transform:translateY(-1px)}.pathCard p{margin:4px 0 0;color:var(--muted);font-size:13px}.pathIcon{flex:0 0 34px;width:34px;height:34px;border-radius:11px;background:#e7eef6;color:var(--brand);display:grid;place-items:center;font-weight:900}.gradeGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.gradeCard{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow);cursor:pointer}.gradeCard:hover{border-color:#b9c9da;transform:translateY(-1px)}.gradeCard strong{display:block;font-size:18px}.gradeCard p{margin:7px 0 0;color:var(--muted);font-size:13px}.gradeCard .gradeAction{display:inline-block;margin-top:14px;color:var(--brand);font-size:12px;font-weight:900}.gradeCard.active{outline:3px solid #d6e7f7;outline-offset:1px}@media(max-width:850px){.statGrid,.gradeGrid{grid-template-columns:repeat(2,1fr)}.pathGrid{grid-template-columns:1fr}}@media(max-width:560px){.statGrid,.gradeGrid{grid-template-columns:1fr}}
+</style></head>
+<body><header><div class="wrap"><nav><a class="brand" href="index.html"><span class="brandMark" aria-hidden="true">NV</span><span>Neurodivergent Voices<small>Academy • Pre-K–5</small></span></a><div class="navlinks"><a href="index.html">Home</a><a href="academy-dashboard.html">Dashboard</a><a href="academy-progress.html">Progress</a><a href="teacher.html">Teacher / Caregiver</a></div></nav></div></header><main class="wrap"><section class="hero"><span class="eyebrow">NEURODIVERGENT-AFFIRMING LEARNING</span><h1>Neurodivergent Voices Academy</h1><p class="muted">Choose a grade, subject, unit, and lesson. Every lesson keeps the academic goal clear while offering flexible ways to access, practice, communicate, and demonstrate learning.</p></section><section class="academyOverview">
+<div class="sectionHead"><div><h2>Your learning hub</h2><p>A clear starting point for learners, families, and educators.</p></div></div>
+<div class="statGrid">
+<div class="statCard"><strong>7</strong><span>learning levels</span></div>
+<div class="statCard"><strong>8</strong><span>subject areas</span></div>
+<div class="statCard"><strong>80</strong><span>units</span></div>
+<div class="statCard"><strong>10</strong><span>lessons per unit</span></div>
+</div>
+<div class="pathGrid">
+<a class="pathCard" href="#start"><span class="pathIcon">1</span><div><strong>Choose a level</strong><p>Start where the learner is ready.</p></div></a>
+<a class="pathCard" href="#start"><span class="pathIcon">2</span><div><strong>Choose a subject</strong><p>Read, calculate, explore, create, move, and more.</p></div></a>
+<a class="pathCard" href="#start"><span class="pathIcon">3</span><div><strong>Practice your way</strong><p>Speak, point, write, draw, type, match, move, or use AAC.</p></div></a>
+</div>
+</section>
+<section class="gradeSection">
+<div class="sectionHead"><div><h2>Choose a learning level</h2><p>Each level provides age-appropriate goals with flexible access and response options.</p></div></div>
+<div class="gradeGrid" id="gradeCards"></div>
+</section>
+<section id="start" class="learningCard"><div class="sectionHead"><div><h2>Start learning</h2><p>Choose your path and begin a lesson.</p></div></div><div class="controls"><label>Grade<select id="grade"></select></label><label>Subject<select id="subject"></select></label><label>Unit<select id="unit"></select></label><label>Lesson<select id="lesson"></select></label></div><div class="actions"><button class="primary" id="openLessonBtn" type="button">Open lesson</button><button class="secondary" id="progressBtn" type="button">View progress</button></div></section><section id="lessonView" class="lesson hidden" aria-live="polite"></section><p id="academyStatus" class="muted" aria-live="polite">Academy is loading…</p><section id="progressView" class="lesson hidden"></section></main><script src="academy-data.js?v=20260921d"></script><script src="academy.js?v=20260921d"></script><script>
+document.addEventListener("DOMContentLoaded",function(){
+ const cards=document.getElementById("gradeCards"), grade=document.getElementById("grade");
+ if(!cards||!grade)return;
+ const descriptions={
+ "Pre-K":"Explore through play, pictures, sounds, movement, and simple choices.",
+ "Kindergarten":"Build early skills with concrete examples, visuals, and guided practice.",
+ "Grade 1":"Strengthen foundational skills through models and repeated practice.",
+ "Grade 2":"Apply skills to familiar problems, texts, and real-world situations.",
+ "Grade 3":"Explain ideas, use evidence or models, and solve multi-step tasks.",
+ "Grade 4":"Compare, analyze, organize evidence, and communicate with growing independence.",
+ "Grade 5":"Apply concepts, justify thinking, solve multi-step tasks, and create original responses."
+ };
+ Array.from(grade.options).forEach(function(opt,i){
+   const a=document.createElement("button"); a.type="button"; a.className="gradeCard";
+   a.innerHTML="<strong>"+opt.text+"</strong><p>"+(descriptions[opt.text]||"Flexible, accessible learning with multiple ways to respond.")+"</p><span class='gradeAction'>Start this level →</span>";
+   a.onclick=function(){grade.value=String(i); grade.dispatchEvent(new Event("change")); document.getElementById("start").scrollIntoView({behavior:"smooth",block:"start"});};
+   cards.appendChild(a);
+ });
+});
+</script></body></html>
