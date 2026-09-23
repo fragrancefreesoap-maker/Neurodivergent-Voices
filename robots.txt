@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fragrancefreesoap-maker.github.io/Neurodivergent-Voices/sitemap.xml
