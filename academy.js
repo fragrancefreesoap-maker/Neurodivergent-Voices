@@ -246,7 +246,7 @@ function showProgress(){
  v.innerHTML="<h2>Academy progress</h2><p><strong>"+Object.keys(p).length+"</strong> lessons demonstrated.</p><p>Progress is saved on this device.</p>";
  v.scrollIntoView({behavior:"smooth",block:"start"});
 }
-document.addEventListener("DOMContentLoaded",()=>{
+function initAcademy(){
  try{
    populate();
    const status=$("academyStatus");
