@@ -101,6 +101,32 @@ function makeLesson(){
    extension:"Try a new example, explain a strategy, create an example, or apply the skill in a familiar setting."
  };
 }
+function renderMathManipulator(grade,unitTitle){
+ const presets={
+  "Pre-K":["Counting Bears","Ten-Frame","Shapes"],"Kindergarten":["Counters","Ten-Frame","Pattern Blocks"],
+  "Grade 1":["Base-Ten Blocks","Ten-Frame","Number Line"],"Grade 2":["Base-Ten Blocks","Arrays","Fraction Strips"],
+  "Grade 3":["Arrays","Fraction Circles","Area Tiles"],"Grade 4":["Decimal Grid","Fraction Strips","Coordinate Grid"],
+  "Grade 5":["Decimal Grid","Fraction Tiles","Volume Cubes"]
+ };
+ const tools=presets[grade]||presets["Grade 1"];
+ return '<div class="manip-wrap" id="mathManip"><h3>Interactive Math Manipulatives</h3><p>Use these virtual tools to model the math idea. Move, count, build, or select objects.</p><div class="manip-tools">'+tools.map((x,i)=>'<button type="button" class="manip-tool'+(i===0?' active':'')+'" data-manip="'+i+'">'+esc(x)+'</button>').join("")+'</div><div class="manip-board" id="manipBoard"></div><div class="manip-controls"><button type="button" id="manipAdd">Add</button><button type="button" id="manipRemove">Remove</button><button type="button" id="manipReset">Reset</button></div><div class="manip-status" id="manipStatus" aria-live="polite">0 objects</div></div>';
+}
+function activateMathManipulator(){
+ const wrap=$("mathManip"); if(!wrap)return;
+ let kind=0,count=0;
+ const board=$("manipBoard"),status=$("manipStatus");
+ function draw(){
+  board.innerHTML="";
+  const n=Math.min(count,30);
+  for(let i=0;i<n;i++){
+   const el=document.createElement("button"); el.type="button"; el.className=kind===2?"cube":"counter"; el.textContent=kind===1?String(i+1):kind===2?"10":""; el.setAttribute("aria-label","Object "+(i+1)); el.onclick=()=>{el.classList.toggle("on");};
+   board.appendChild(el);
+  }
+  status.textContent=count+" object"+(count===1?"":"s")+" on the board.";
+ }
+ document.querySelectorAll("[data-manip]").forEach(b=>b.onclick=()=>{kind=Number(b.dataset.manip);document.querySelectorAll("[data-manip]").forEach(x=>x.classList.remove("active"));b.classList.add("active");draw();});
+ $("manipAdd").onclick=()=>{count++;draw();}; $("manipRemove").onclick=()=>{count=Math.max(0,count-1);draw();}; $("manipReset").onclick=()=>{count=0;draw();}; draw();
+}
 function mathManipulatives(grade,unit){
  const byGrade={
   "Pre-K":["counting bears or linking cubes","ten-frame","dot cards","large foam shapes","pattern blocks","number cards","sorting trays","play coins","measuring cups","dice"],
@@ -139,7 +165,7 @@ function openLesson(){
    "<h3>Teacher / Caregiver Model</h3><p>"+esc(r.model)+"</p>"+
    "<h3>Practice Together</h3><p>"+esc(r.practice)+"</p>"+
    "<h3>Activity</h3><p>"+esc(r.activity)+"</p>"+
-   (r.subject==="Mathematics" ? (function(){ const m=mathManipulatives(r.grade,r.unitTitle); return "<h3>Math Manipulatives</h3><p><strong>Use first:</strong> "+esc(m.primary)+"</p><p><strong>Other grade-level tools:</strong> "+esc(m.all.join(" • "))+"</p><p><strong>How to use them:</strong> "+esc(m.how)+"</p><p><strong>Accessibility:</strong> "+esc(m.access)+"</p>"; })() : "")+
+   (r.subject==="Mathematics" ? (function(){ const m=mathManipulatives(r.grade,r.unitTitle); return "<h3>Math Manipulatives</h3><p><strong>Use first:</strong> "+esc(m.primary)+"</p><p><strong>Other grade-level tools:</strong> "+esc(m.all.join(" • "))+"</p><p><strong>How to use them:</strong> "+esc(m.how)+"</p><p><strong>Accessibility:</strong> "+esc(m.access)+"</p>"+renderMathManipulator(r.grade,r.unitTitle); })() : "")+
    '<div class="activityGrid">'+
      '<div class="activityCard"><strong>Choose</strong><p>Answer a quick-check question.</p><button type="button" data-step="choose">Start</button></div>'+
      '<div class="activityCard"><strong>Match / Sort</strong><p>Classify the lesson idea.</p><button type="button" data-step="match">Start</button></div>'+
@@ -155,6 +181,7 @@ function openLesson(){
    '<div class="actions"><button class="primary" id="done" type="button">Mark demonstrated</button></div><p id="status">'+(p[r.id]?"✓ Demonstrated":"Not started")+"</p>";
 
   const activityState={choose:false,match:false,show:false};
+  if(r.subject==="Mathematics") setTimeout(activateMathManipulator,0);
   function updateFeedback(){
     const n=Object.values(activityState).filter(Boolean).length;
     $("activityFeedback").textContent=n===3?"✓ All three activity types completed. You can now mark the lesson demonstrated.":"You have completed "+n+" of 3 activity types.";
