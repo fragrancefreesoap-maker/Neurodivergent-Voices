@@ -64,9 +64,15 @@ function makeLesson(){
 }
 function openLesson(){
  try{
- const status=$("academyStatus");if(status)status.textContent="Opening lesson…";
+  const status=$("academyStatus"); if(status)status.textContent="Opening lesson…";
   const r=makeLesson(), p=getProgress(), v=$("lessonView");
   if(!r)throw new Error("No lesson was returned.");
+  const g=Number($("grade").value),s=Number($("subject").value),u=Number($("unit").value),l=Number($("lesson").value);
+  const question=(typeof makeQuestion==="function")?makeQuestion(g,r.subject,u,l,r.goal):{
+    question:"Which response best demonstrates today's learning goal?",
+    answers:["A response connected to the lesson","An unrelated response","No response"],
+    correct:0
+  };
   v.classList.remove("hidden");
   v.innerHTML=
    '<span class="pill">'+esc(r.grade)+" • "+esc(r.subject)+" • Unit "+esc(r.unit)+" • Lesson "+esc(r.lesson)+"</span>"+
@@ -77,8 +83,12 @@ function openLesson(){
    "<h3>Teacher / Caregiver Model</h3><p>"+esc(r.model)+"</p>"+
    "<h3>Practice Together</h3><p>"+esc(r.practice)+"</p>"+
    "<h3>Activity</h3><p>"+esc(r.activity)+"</p>"+
-   '<div class="activityGrid"><div class="activityCard"><strong>Choose</strong><p>Select a response that fits the learning goal.</p><button type="button" data-step="choose">Start</button></div><div class="activityCard"><strong>Match / Sort</strong><p>Connect or group examples.</p><button type="button" data-step="match">Start</button></div><div class="activityCard"><strong>Show What You Know</strong><p>Demonstrate the skill in your preferred way.</p><button type="button" data-step="show">Start</button></div></div>'+
-   '<div id="activityFeedback" class="feedback">Complete the three activity steps.</div>'+
+   '<div class="activityGrid">'+
+     '<div class="activityCard"><strong>Choose</strong><p>Answer a quick-check question.</p><button type="button" data-step="choose">Start</button></div>'+
+     '<div class="activityCard"><strong>Match / Sort</strong><p>Classify the lesson idea.</p><button type="button" data-step="match">Start</button></div>'+
+     '<div class="activityCard"><strong>Show What You Know</strong><p>Demonstrate the skill your way.</p><button type="button" data-step="show">Start</button></div>'+
+   '</div>'+
+   '<div id="activityFeedback" class="feedback">Complete all three activity types.</div>'+
    "<h3>Ways to Respond</h3><p>"+esc(r.response)+"</p>"+
    "<h3>Visual Support</h3><p>"+esc(r.visual)+"</p>"+
    "<h3>AAC Support</h3><p>"+esc(r.aac)+"</p>"+
@@ -86,34 +96,62 @@ function openLesson(){
    "<h3>Check for Learning</h3><p>"+esc(r.check)+"</p>"+
    "<h3>Extension</h3><p>"+esc(r.extension)+"</p>"+
    '<div class="actions"><button class="primary" id="done" type="button">Mark demonstrated</button></div><p id="status">'+(p[r.id]?"✓ Demonstrated":"Not started")+"</p>";
+
   const activityState={choose:false,match:false,show:false};
-  const makeOptions=(type)=>{
-    if(type==="choose") return ["I can point to it","I can say it","I can type it"];
-    if(type==="match") return ["Same idea","Different idea","Not sure"];
-    return ["I can draw it","I can write it","I can explain it"];
-  };
+  function updateFeedback(){
+    const n=Object.values(activityState).filter(Boolean).length;
+    $("activityFeedback").textContent=n===3?"✓ All three activity types completed. You can now mark the lesson demonstrated.":"You have completed "+n+" of 3 activity types.";
+  }
+  function addChoiceButtons(box,answers,handler){
+    box.innerHTML="<div class=\"exerciseChoices\"></div><p class=\"exerciseResult\" aria-live=\"polite\"></p>";
+    const choices=box.querySelector(".exerciseChoices");
+    choices.innerHTML=answers.map((x,i)=>'<button type="button" class="exerciseChoice" data-choice="'+i+'">'+esc(x)+"</button>").join("");
+    choices.querySelectorAll(".exerciseChoice").forEach(btn=>btn.onclick=()=>handler(Number(btn.dataset.choice),box));
+  }
+
   document.querySelectorAll("[data-step]").forEach(b=>b.onclick=()=>{
-    const type=b.dataset.step;
-    const card=b.closest(".activityCard");
+    const type=b.dataset.step, card=b.closest(".activityCard");
     let box=card.querySelector(".exerciseBox");
-    if(!box){
-      box=document.createElement("div"); box.className="exerciseBox";
-      box.innerHTML="<p><strong>Try the exercise:</strong> Choose the response that works for you.</p><div class=\"exerciseChoices\"></div><p class=\"exerciseResult\" aria-live=\"polite\"></p>";
-      card.appendChild(box);
-      box.querySelector(".exerciseChoices").innerHTML=makeOptions(type).map((x,i)=>'<button type="button" class="exerciseChoice" data-choice="'+i+'">'+esc(x)+"</button>").join("");
-      box.querySelectorAll(".exerciseChoice").forEach(ch=>ch.onclick=()=>{
-        box.querySelectorAll(".exerciseChoice").forEach(x=>x.classList.remove("selected"));
-        ch.classList.add("selected"); activityState[type]=true;
-        box.querySelector(".exerciseResult").textContent="✓ Response recorded. You can try another response or continue.";
-        const n=Object.values(activityState).filter(Boolean).length;
-        $("activityFeedback").textContent=n===3?"✓ All three exercises completed.":"You have completed "+n+" of 3 exercises.";
+    if(!box){box=document.createElement("div");box.className="exerciseBox";card.appendChild(box);}
+    if(type==="choose"){
+      box.innerHTML="<p><strong>"+esc(question.question)+"</strong></p>";
+      const answers=question.answers||[];
+      addChoiceButtons(box,answers,(choice,el)=>{
+        el.querySelectorAll(".exerciseChoice").forEach(x=>x.classList.remove("selected"));
+        el.querySelector('[data-choice="'+choice+'"]').classList.add("selected");
+        const ok=choice===Number(question.correct);
+        el.querySelector(".exerciseResult").textContent=ok?"✓ Correct. You matched the lesson goal.":"Try again. Look back at the learning goal and model.";
+        if(ok){activityState.choose=true;updateFeedback();}
+      });
+    }else if(type==="match"){
+      box.innerHTML="<p><strong>Sort this idea:</strong> Does it directly match the lesson goal?</p>";
+      addChoiceButtons(box,["Matches the goal","Does not match the goal"],(choice,el)=>{
+        el.querySelectorAll(".exerciseChoice").forEach(x=>x.classList.remove("selected"));
+        el.querySelector('[data-choice="'+choice+'"]').classList.add("selected");
+        const ok=choice===0;
+        el.querySelector(".exerciseResult").textContent=ok?"✓ Correct sort.":"Try again: connect the choice to the learning goal.";
+        if(ok){activityState.match=true;updateFeedback();}
+      });
+    }else{
+      box.innerHTML="<p><strong>Show what you know:</strong> Choose a way to demonstrate the skill.</p>";
+      addChoiceButtons(box,["Speak / explain","Point / select / match","Write / type / draw","Build / move / demonstrate","Use AAC"],(choice,el)=>{
+        el.querySelectorAll(".exerciseChoice").forEach(x=>x.classList.remove("selected"));
+        el.querySelector('[data-choice="'+choice+'"]').classList.add("selected");
+        el.querySelector(".exerciseResult").textContent="✓ Demonstration method recorded. Complete the demonstration with a teacher, caregiver, or independently as appropriate.";
+        activityState.show=true;updateFeedback();
       });
     }
-    box.style.display="block"; box.hidden=false; box.scrollIntoView({behavior:"smooth",block:"center"});
+    box.scrollIntoView({behavior:"smooth",block:"center"});
   });
+
   $("done").onclick=()=>{
-    if(!Object.values(activityState).every(Boolean)){ $("activityFeedback").textContent="Complete an exercise in Choose, Match / Sort, and Show What You Know first."; return; }
-    const q=getProgress();q[r.id]="Demonstrated";setProgress(q);$("status").textContent="✓ Demonstrated — progress saved on this device.";
+    if(!Object.values(activityState).every(Boolean)){
+      $("activityFeedback").textContent="Finish Choose, Match / Sort, and Show What You Know before marking the lesson demonstrated.";
+      return;
+    }
+    const q=getProgress();q[r.id]="Demonstrated";setProgress(q);
+    $("status").textContent="✓ Demonstrated — progress saved on this device.";
+    if(status)status.textContent="Lesson complete — progress saved.";
   };
   v.scrollIntoView({behavior:"smooth",block:"start"});
  }catch(e){showError(e);console.error(e)}
