@@ -101,6 +101,23 @@ function makeLesson(){
    extension:"Try a new example, explain a strategy, create an example, or apply the skill in a familiar setting."
  };
 }
+function mathManipulatives(grade,unit){
+ const byGrade={
+  "Pre-K":["counting bears or linking cubes","ten-frame","dot cards","large foam shapes","pattern blocks","number cards","sorting trays","play coins","measuring cups","dice"],
+  "Kindergarten":["counters","ten-frames","connecting cubes","number cards","rekenrek","pattern blocks","shape tiles","unifix cubes","play money","nonstandard measuring tools"],
+  "Grade 1":["connecting cubes","ten-frames","rekenrek","base-ten blocks","number lines","place-value mats","pattern blocks","rulers","coins","dice"],
+  "Grade 2":["base-ten blocks","place-value disks","open number lines","arrays with tiles","multiplication counters","fraction strips","rulers","geometric solids","coins and bills","bar-graph tiles"],
+  "Grade 3":["base-ten blocks","place-value disks","multiplication arrays","equal-group counters","fraction strips","fraction circles","rulers and measuring tapes","area tiles","geometric solids","graphing tiles"],
+  "Grade 4":["place-value disks","base-ten blocks","fraction strips","fraction circles","decimal grids","number lines","area/perimeter tiles","angle rulers/protractors","measurement tools","coordinate-grid tiles"],
+  "Grade 5":["place-value disks","decimal grids","fraction tiles","fraction strips","number lines","ratio tables","coordinate-grid tiles","volume cubes","protractors","data/graphing tiles"]
+ };
+ const units={
+  "Numbers & Counting":0,"Place Value":1,"Addition & Subtraction":2,"Multiplication & Division":3,"Fractions & Decimals":4,"Measurement":5,"Geometry":6,"Patterns & Algebraic Thinking":7,"Data & Graphing":9,"Problem Solving":8
+ };
+ const list=byGrade[grade]||byGrade["Grade 1"];
+ const primary=list[units[unit]??0];
+ return {primary,all:list,how:"Use the manipulative to model the idea first, then connect the model to drawings, numbers, symbols, or equations.",access:"Learners may touch, move, point to, sort, build, select, or observe the manipulatives. A digital or picture-based equivalent can be used when physical materials are unavailable."};
+}
 function openLesson(){
  try{
   const status=$("academyStatus"); if(status)status.textContent="Opening lesson…";
@@ -122,6 +139,7 @@ function openLesson(){
    "<h3>Teacher / Caregiver Model</h3><p>"+esc(r.model)+"</p>"+
    "<h3>Practice Together</h3><p>"+esc(r.practice)+"</p>"+
    "<h3>Activity</h3><p>"+esc(r.activity)+"</p>"+
+   (r.subject==="Mathematics" ? (function(){ const m=mathManipulatives(r.grade,r.unitTitle); return "<h3>Math Manipulatives</h3><p><strong>Use first:</strong> "+esc(m.primary)+"</p><p><strong>Other grade-level tools:</strong> "+esc(m.all.join(" • "))+"</p><p><strong>How to use them:</strong> "+esc(m.how)+"</p><p><strong>Accessibility:</strong> "+esc(m.access)+"</p>"; })() : "")+
    '<div class="activityGrid">'+
      '<div class="activityCard"><strong>Choose</strong><p>Answer a quick-check question.</p><button type="button" data-step="choose">Start</button></div>'+
      '<div class="activityCard"><strong>Match / Sort</strong><p>Classify the lesson idea.</p><button type="button" data-step="match">Start</button></div>'+
