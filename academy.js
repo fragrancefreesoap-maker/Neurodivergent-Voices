@@ -33,8 +33,34 @@ function fillLessons(){
  for(let i=0;i<10;i++)l.add(new Option("Lesson "+(i+1)+(steps[i]?": "+steps[i]:""),i));
 }
 function makeLesson(){
- if(typeof ACADEMY.make!=="function") throw new Error("Academy lesson generator is unavailable.");
- return ACADEMY.make(Number($("grade").value),Number($("subject").value),Number($("unit").value),Number($("lesson").value));
+ const g=Number($("grade").value),s=Number($("subject").value),u=Number($("unit").value),l=Number($("lesson").value);
+ if(typeof ACADEMY.make==="function"){
+   try{
+     const made=ACADEMY.make(g,s,u,l);
+     if(made)return made;
+   }catch(err){console.warn("Generated lesson failed; using fallback lesson.",err)}
+ }
+ const grade=(ACADEMY.grades||[])[g]||"Learner";
+ const subject=(ACADEMY.subjects||[])[s]||"Learning";
+ const unitTitle=((ACADEMY.units||{})[subject]||[])[u]||("Unit "+(u+1));
+ const step=(ACADEMY.lessonSteps||[])[l]||("Lesson "+(l+1));
+ const n=l+1;
+ return {
+   id:[g,s,u,l].join("-"),grade,subject,unit:u+1,unitTitle,lesson:n,
+   title:unitTitle+" — "+step+" — Lesson "+n,
+   goal:"I can explore and practice "+unitTitle.toLowerCase()+".",
+   vocabulary:[unitTitle,step,"example"],
+   learn:"Today we will explore "+unitTitle.toLowerCase()+" through a clear example and guided practice.",
+   model:"The teacher or caregiver models one example, then pauses so the learner can respond.",
+   practice:"Try the same idea together using words, pictures, objects, movement, writing, typing, pointing, or AAC.",
+   activity:"Complete one short example connected to "+unitTitle.toLowerCase()+".",
+   response:"Show what you know in any effective mode: speak, point, select, type, write, draw, match, build, move, sign, demonstrate, or use AAC.",
+   visual:"Use a picture, object, diagram, written example, gesture, or step card to make the idea visible.",
+   aac:"Offer core words such as help, more, same, different, again, finished, yes, no, and the lesson vocabulary.",
+   break:"Pause for movement, sensory regulation, water, quiet time, or a change of position.",
+   check:"Demonstrate the target with support as needed.",
+   extension:"Try a new example, explain a strategy, create an example, or apply the skill in a familiar setting."
+ };
 }
 function openLesson(){
  try{
@@ -98,4 +124,13 @@ function showProgress(){
  v.innerHTML="<h2>Academy progress</h2><p><strong>"+Object.keys(p).length+"</strong> lessons demonstrated.</p><p>Progress is saved on this device.</p>";
  v.scrollIntoView({behavior:"smooth",block:"start"});
 }
-document.addEventListener("DOMContentLoaded",()=>{try{populate()}catch(e){showError(e);console.error(e)}});
+document.addEventListener("DOMContentLoaded",()=>{
+ try{
+   populate();
+   const status=$("academyStatus");
+   if(status)status.textContent="Ready — choose a lesson and tap Open lesson.";
+ }catch(e){
+   showError(e);
+   console.error("Academy startup error:",e);
+ }
+});
