@@ -255,4 +255,5 @@ function initAcademy(){
    showError(e);
    console.error("Academy startup error:",e);
  }
-});
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",initAcademy); else initAcademy();
